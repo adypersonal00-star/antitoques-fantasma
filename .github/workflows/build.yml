@@ -10,12 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract Android project
-        run: python3 -m zipfile -e antitoques-fantasma-source.zip .
-      - name: Fix Kotlin compilation issues in source ZIP
-        run: |
-          sed -i 's|import androidx.compose.foundation.shape.RectangleShape|import androidx.compose.ui.graphics.RectangleShape|' scratch/antitoques-fantasma/app/src/main/java/com/zapia/antitoques/MainActivity.kt
-          sed -i 's/private val expireOverlay=Runnable{/private val expireOverlay: Runnable = Runnable{/' scratch/antitoques-fantasma/app/src/main/java/com/zapia/antitoques/GhostTouchAccessibilityService.kt
+      - name: Extract updated Android project
+        run: python3 -m zipfile -e antitoques-fantasma-source-v3.zip .
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -34,7 +30,7 @@ jobs:
         run: gradle assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: antitoques-fantasma-debug-apk
+          name: antitoques-fantasma-debug-apk-v2
           path: scratch/antitoques-fantasma/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 30
